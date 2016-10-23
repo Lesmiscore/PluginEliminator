@@ -94,7 +94,7 @@ public class PluginMain extends PluginBase implements Listener {
 	private File findPath(Plugin p) {
 		// Try to get the object of the "file" field.
 		try {
-			Field field = PluginBase.class.getField("file");
+			Field field = PluginBase.class.getDeclaredField("file");
 			field.setAccessible(true);
 			return (File) field.get(p);
 		} catch (IllegalArgumentException | IllegalAccessException | NoSuchFieldException | SecurityException e) {
