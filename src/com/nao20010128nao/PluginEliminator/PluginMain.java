@@ -26,6 +26,9 @@ public class PluginMain extends PluginBase implements Listener {
 		// TODO 自動生成されたコンストラクター・スタブ
 	}
 
+	public static void main(String[] args) {
+	}
+
 	@Override
 	public void onEnable() {
 		getServer().getCommandMap().register("delete", new CommandDispatcher("delete"));
@@ -66,11 +69,6 @@ public class PluginMain extends PluginBase implements Listener {
 	 */
 	private void eliminate(Plugin plugin) throws Throwable {
 		if (plugin.isEnabled()) {
-			try {
-				plugin.getPluginLoader().disablePlugin(plugin);
-			} catch (Exception e) {
-				throw e;
-			}
 			getServer().getScheduler().cancelTask(plugin);
 			HandlerList.unregisterAll(plugin);
 			for (Permission permission : plugin.getDescription().getPermissions())
@@ -84,7 +82,8 @@ public class PluginMain extends PluginBase implements Listener {
 			if (where.isDirectory())
 				deleteRescursive(where);
 			else if (where.isFile())
-				where.delete();
+				if (!where.delete())
+					where.deleteOnExit();
 	}
 
 	/**
