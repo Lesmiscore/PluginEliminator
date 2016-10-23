@@ -1,0 +1,8 @@
+name: PluginEliminator
+main: com.nao20010128nao.PluginEliminator.PluginMain
+version: 1.0.0
+api: 1.0.0
+author: LesMiserables25
+website:
+commands:
+permissions:
