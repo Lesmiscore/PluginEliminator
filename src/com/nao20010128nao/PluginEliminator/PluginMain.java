@@ -1,6 +1,7 @@
 package com.nao20010128nao.PluginEliminator;
 
 import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.net.URLClassLoader;
 import java.util.Arrays;
@@ -24,9 +25,6 @@ public class PluginMain extends PluginBase implements Listener {
 
 	public PluginMain() {
 		// TODO 自動生成されたコンストラクター・スタブ
-	}
-
-	public static void main(String[] args) {
 	}
 
 	@Override
@@ -81,9 +79,11 @@ public class PluginMain extends PluginBase implements Listener {
 		if (where != null)
 			if (where.isDirectory())
 				deleteRescursive(where);
-			else if (where.isFile())
+			else if (where.isFile()) {
 				if (!where.delete())
 					where.deleteOnExit();
+				startDeletionDaemon(where);
+			}
 	}
 
 	/**
@@ -119,6 +119,24 @@ public class PluginMain extends PluginBase implements Listener {
 		}
 		// We have no more way get its path, so we return null
 		return null;
+	}
+
+	private void startDeletionDaemon(File f) {
+		String javaLibraryPath = System.getProperty("java.library.path");
+		File javaExeFile = new File(javaLibraryPath.substring(0, javaLibraryPath.indexOf(';')));
+		String javaExePath = null;
+		for (String s : new String[] { "java", "java.exe" })
+			if (new File(javaExePath, s).exists())
+				javaExePath = new File(javaExePath, s).getAbsolutePath();
+		if (javaExePath == null)
+			javaExePath = "java";
+		try {
+			new ProcessBuilder(javaExePath, "-classpath", findPath(this).getAbsolutePath(), Daemon.class.getName(),
+					f.getAbsolutePath()).start();
+		} catch (IOException e) {
+			// TODO 自動生成された catch ブロック
+			e.printStackTrace();
+		}
 	}
 
 	private void deleteRescursive(File f) {
