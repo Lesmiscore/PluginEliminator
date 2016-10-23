@@ -30,7 +30,6 @@ public class PluginMain extends PluginBase implements Listener {
 	@Override
 	public void onEnable() {
 		getServer().getCommandMap().register("delete", new CommandDispatcher("delete"));
-
 	}
 
 	@Override
