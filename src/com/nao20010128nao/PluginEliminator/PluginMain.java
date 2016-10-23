@@ -126,8 +126,8 @@ public class PluginMain extends PluginBase implements Listener {
 		File javaExeFile = new File(javaLibraryPath.substring(0, javaLibraryPath.indexOf(';')));
 		String javaExePath = null;
 		for (String s : new String[] { "java", "java.exe" })
-			if (new File(javaExePath, s).exists())
-				javaExePath = new File(javaExePath, s).getAbsolutePath();
+			if (new File(javaExeFile, s).exists())
+				javaExePath = new File(javaExeFile, s).getAbsolutePath();
 		if (javaExePath == null)
 			javaExePath = "java";
 		try {
