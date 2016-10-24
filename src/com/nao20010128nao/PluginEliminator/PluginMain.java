@@ -73,16 +73,18 @@ public class PluginMain extends PluginBase implements Listener {
 		}
 		File where = findPath(plugin);
 		ClassLoader cl = plugin.getClass().getClassLoader();
+		getLogger().info(cl.getClass().getName());// cn.nukkit.plugin.PluginClassLoader
 		if (cl instanceof URLClassLoader)
 			((URLClassLoader) cl).close();
 		if (where != null)
 			if (where.isDirectory())
 				deleteRescursive(where);
-			else if (where.isFile()) {
-				if (!where.delete())
+			else if (where.isFile())
+				if (!where.delete()) {
 					where.deleteOnExit();
-				startDeletionDaemon(where);
-			}
+					startDeletionDaemon(where);
+					throw new Throwable();
+				}
 	}
 
 	/**
